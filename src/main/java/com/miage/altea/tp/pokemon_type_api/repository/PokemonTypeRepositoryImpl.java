@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class PokemonTypeRepositoryImpl implements PokemonTypeRepository {
@@ -29,13 +30,19 @@ public class PokemonTypeRepositoryImpl implements PokemonTypeRepository {
     @Override
     public PokemonType findPokemonTypeById(int id) {
         System.out.println("Loading Pokemon information for Pokemon id " + id);
-        return this.pokemons.stream().filter(e-> e.getId() == id).findFirst().get();
+        return this.pokemons.stream().filter(e -> e.getId() == id).findFirst().get();
     }
 
     @Override
     public PokemonType findPokemonTypeByName(String name) {
         System.out.println("Loading Pokemon information for Pokemon name " + name);
-        return this.pokemons.stream().filter(e-> e.getName().equals(name)).findFirst().get();
+        return this.pokemons.stream().filter(e -> e.getName().equals(name)).findFirst().get();
+    }
+
+    @Override
+    public List<PokemonType> findPokemonTypeByTypes(List<String> types) {
+        System.out.println("Loading Pokemon information for Pokemon type " + types.stream().map(Object::toString).collect(Collectors.joining(",")));
+        return this.pokemons.stream().filter(e -> e.getTypes().containsAll(types)).collect(Collectors.toList());
     }
 
     @Override
